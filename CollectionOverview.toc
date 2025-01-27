@@ -12,7 +12,7 @@
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## AllowLoadGameType: mainline
-## SavedVariables: COLOV_Database_Options
+## SavedVariables: CollectionOverview_Options
 
 locals.xml
 core.xml
