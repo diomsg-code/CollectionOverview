@@ -58,6 +58,61 @@ function collectionOverviewFrame:ADDON_LOADED(_, addOnName)
     end
 end
 
+function collectionOverviewFrame:Load()
+    local tab = LibStub('SecureTabs-2.0'):Add(CollectionsJournal, self, "Hallo")
+    tab:SetText('blue')
+
+    -- Erstellt den Inhaltsbereich für den Tab
+    tab.frame = CreateFrame("Frame", nil, CollectionsJournal, "ButtonFrameTemplate")
+    tab.frame:SetTitle("Skyriding Race Tracker")
+
+    local secureTabButton = CreateFrame("Button", nil, CollectionsJournal, "SecureActionButtonTemplate")
+    secureTabButton:SetAttribute("type", "click")
+    secureTabButton:SetAttribute("clickbutton", CollectionsJournalTab4)
+    secureTabButton:SetPoint("TOPLEFT", tab, "TOPLEFT")
+    secureTabButton:SetPoint("BOTTOMRIGHT", tab, "BOTTOMRIGHT")
+    secureTabButton:RegisterForClicks("AnyDown")
+
+    tab.frame.portrait = tab.frame:GetPortrait()
+    tab.frame.portrait:SetPoint('TOPLEFT', -5, 8)
+    tab.frame.portrait:SetTexture(COLOV.MEDIA_PATH .. "iconRound.blp")
+
+    tab.frame:SetAllPoints(CollectionsJournal)
+    tab.frame:Hide()
+
+    -- Füge Text hinzu
+    local text = tab.frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+    text:SetPoint("CENTER", tab.frame, "CENTER", 0, 0)
+    text:SetText("Test-Inhalt für den neuen Tab")
+
+    tab.OnSelect = function()
+        tab.LeftHighlight:Hide()
+        tab.MiddleHighlight:Hide()
+        tab.RightHighlight:Hide()
+        tab:SetHighlightLocked(true)
+
+        HeirloomsJournal.ClassDropdown:Hide()
+        HeirloomsJournal.progressBar:Hide()
+        HeirloomsJournal.SearchBox:Hide()
+        HeirloomsJournal.FilterDropdown:Hide()
+
+        print('Tab was clicked!')
+        tab.frame:Show()
+    end
+
+    tab.OnDeselect = function()
+        print('A different tab was clicked!')
+    end
+end
+
+hooksecurefunc("ToggleCollectionsJournal", function(tab)
+    if tab ~= nil then return end
+    if not CollectionsJournal then return end
+    if not CollectionsJournal:IsShown() then return end
+
+    --collectionOverviewFrame:Load()
+end)
+
 collectionOverviewFrame:RegisterEvent("ADDON_LOADED")
 collectionOverviewFrame:SetScript("OnEvent", collectionOverviewFrame.OnEvent)
 
